@@ -14,7 +14,7 @@ int main() {
   std::cout << "decoded: " << std::endl << decoded << std::endl;
 
 
-  // Test all possibilites of fill bytes (none, one =, two ==)
+  // Test all possibilites of fill bytes (none, one padding_character, two padding_character)
   // References calculated with: https://www.base64encode.org/
 
   std::string rest0_original = "abc";
@@ -30,7 +30,7 @@ int main() {
 
 
   std::string rest1_original = "abcd";
-  std::string rest1_reference = "YWJjZA==";
+  std::string rest1_reference = "YWJjZA**";
 
   std::string rest1_encoded = base64_encode(reinterpret_cast<const unsigned char*>(rest1_original.c_str()),
     rest1_original.length());
@@ -42,7 +42,7 @@ int main() {
 
 
   std::string rest2_original = "abcde";
-  std::string rest2_reference = "YWJjZGU=";
+  std::string rest2_reference = "YWJjZGU*";
 
   std::string rest2_encoded = base64_encode(reinterpret_cast<const unsigned char*>(rest2_original.c_str()),
     rest2_original.length());
