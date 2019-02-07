@@ -20,3 +20,8 @@ cpp_base64_lib = static_library(
 
 cpp_base64_dep = declare_dependency(include_directories: cpp_base64_inc, link_with: cpp_base64_lib)
 
+test_exe = executable('UnitTest', ['test.cpp', 'base64.cpp'], dependencies: cpp_base64_dep) 
+dir = '@0@'.format(meson.build_root())
+
+test('Common unit tests', test_exe, workdir : dir)
+

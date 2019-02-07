@@ -1,0 +1,47 @@
+image: 10.1.15.1:5000/release-container-gitlab:latest
+ 
+stages:
+  - build
+  - test
+
+debug_build:
+  stage: build
+  script: 
+   - mkdir build
+   - cd build
+   - meson ..
+   - ninja -j 64
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 hour
+    when: on_success
+
+release_build:
+  stage: build
+  script:
+    - mkdir build
+    - cd build
+    - meson --buildtype=release ..
+    - ninja -j 64
+  artifacts:
+    paths:
+      - build
+    expire_in: 1 hour
+    when: on_success
+
+debug_test:
+  stage: test
+  dependencies:
+    - debug_build
+  script:
+    - cd build
+    - ninja test
+
+release_test:
+  stage: test
+  dependencies:
+    - release_build
+  script:
+    - cd build
+    - ninja test
