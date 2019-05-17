@@ -4,18 +4,17 @@ stages:
   - build
   - test
 
+before_script:
+  - export CCACHE_DISABLE=1
+  - export DISTCC_HOSTS=$(sed '/$CI_RUNNER_DESCRIPTION/d' ~/.distcc/hosts | tr '\n' ' ')
+
 debug_build:
   stage: build
   script: 
    - mkdir build
    - cd build
    - meson ..
-   - ninja -j 64
-  artifacts:
-    paths:
-      - build
-    expire_in: 1 hour
-    when: on_success
+   - ninja -j 64 test
 
 release_build:
   stage: build
@@ -23,25 +22,5 @@ release_build:
     - mkdir build
     - cd build
     - meson --buildtype=release ..
-    - ninja -j 64
-  artifacts:
-    paths:
-      - build
-    expire_in: 1 hour
-    when: on_success
+    - ninja -j 64 test
 
-debug_test:
-  stage: test
-  dependencies:
-    - debug_build
-  script:
-    - cd build
-    - ninja test
-
-release_test:
-  stage: test
-  dependencies:
-    - release_build
-  script:
-    - cd build
-    - ninja test
