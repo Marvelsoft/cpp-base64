@@ -1,4 +1,4 @@
-image: 10.1.15.1:5000/release-container-gitlab:latest
+image: gitlab.tz.marvelsoft.net:4567/docker/release_container_gitlab/release-container-gitlab
  
 stages:
   - build
